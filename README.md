@@ -11,6 +11,7 @@ Welcome to the **All-in-KTU** app, an essential tool designed specifically for B
 
 ## Installation
 
+
 ### Android
 1. Download the APK from the [pre-release link](https://github.com/anand-106/All-in-one-KTU_APP/releases/tag/v1.1.1).
 2. Open the downloaded APK file.
