@@ -30,7 +30,7 @@ Welcome to the **All-in-KTU** app, an essential tool designed specifically for B
 
 We welcome contributions from the community! If you would like to contribute to the development of All-in-KTU, please follow these steps:
 
-1. Fork the repository.
+1. Fork the repository
 2. Create a new branch (`git checkout -b feature/YourFeature`).
 3. Commit your changes (`git commit -m 'Add a new feature'`).
 4. Push to the branch (`git push origin feature/YourFeature`).
