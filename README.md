@@ -42,11 +42,11 @@ If you encounter any issues or have suggestions for improvements, please open an
 
 ## Acknowledgements
 
-We would like to thank the KTU student community for their valuable feedback and support during the development of this app.
+We would like to thank the KTU student community for their valuable feedback and support during the development of this app.Happy to work on this.
 
 ---
 
-Stay tuned for more updates and features as we continue to develop the All-in-KTU app to better serve your academic needs.
+
 
 ---
 
