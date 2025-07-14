@@ -1,15 +1,15 @@
-# <p align="center">Automated Twitter and Excel Integration</p>
+# <p align="center">TweetScraper-Excel Integration</p>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Selenium-4DB33D?style=for-the-badge&logo=selenium" alt="Selenium"></a>
-  <a href="#"><img src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas" alt="Pandas"></a>
+    <a href="#"><img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Selenium-4DB33D?style=for-the-badge&logo=selenium&logoColor=white" alt="Selenium"></a>
+    <a href="#"><img src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas"></a>
 </p>
 
 ## Introduction
 
-This project automates interactions between Twitter and Excel, enabling users to perform actions based on Twitter data and user queries. It leverages web scraping to extract tweets, processes them, and interacts with an Excel backend via a Flask API. The target users are data analysts, researchers, and anyone who needs to integrate real-time Twitter data with Excel-based workflows.
+This project automates data extraction from Twitter/X, specifically scraping tweets based on a defined search query. It then processes this data and allows interaction with an Excel application for further analysis or command execution. The system targets users needing automated social media data collection and integration with existing Excel workflows.
 
 ## Table of Contents
 
@@ -23,11 +23,11 @@ This project automates interactions between Twitter and Excel, enabling users to
 
 ## Key Features
 
-*   **Twitter Scraping:** Extracts tweets based on user-defined search queries using Selenium. Utilizes Chrome profiles for realistic scraping behavior.
-*   **Data Processing:** Identifies and filters tweets related to emergencies and specific locations using regular expressions and Pandas.
-*   **Excel Integration:** Executes commands and processes queries within Excel via an `excel_agent`.
-*   **API Endpoints:** Provides a Flask API for interacting with the system, including processing queries, executing commands, and checking system health.
-*   **Autonomous Actions:** Can execute autonomous actions in Excel based on user queries and context.
+*   **Tweet Scraping:** Scrapes tweets from Twitter/X based on a user-defined search query using Selenium.
+*   **Data Processing:** Processes scraped tweet data using pandas, identifying emergency-related tweets and locations.
+*   **Excel Integration:** Connects to an Excel instance and executes commands based on user queries or autonomous actions.
+*   **REST API:** Provides a Flask-based REST API for interacting with the scraping and Excel functionalities.
+*   **Error Handling:** Robust error handling to prevent application crashes and provide informative error messages.
 
 ## Installation Guide
 
@@ -35,33 +35,28 @@ This project automates interactions between Twitter and Excel, enabling users to
 
     ```bash
     git clone <repository_url>
-    cd <repository_name>
+    cd <repository_directory>
     ```
 
-2.  **Install dependencies:**
+2.  **Install the dependencies:**
 
     ```bash
-    pip install -r requirements.txt
+    pip install -r requirements.txt # Add a requirements.txt to the repo, if one is needed.  It is good practice.
     ```
-
-    *(Note: A `requirements.txt` file was not in the code chunk summaries, so create it with the following dependencies: `flask`, `selenium`, `pandas`, `webdriver_manager`)*
 
 3.  **Set up environment variables:**
 
-    Create a `.env` file in the project root and set the following variables:
+    Create a `.env` file in the project root directory and add the following variables:
 
     ```
-    EXCEL_AGENT_CONFIG=<path_to_excel_agent_config> # Path to excel agent configuration file
-    #Example:
-    # AUTH0_DOMAIN=your_auth0_domain
-    # AUTH0_CLIENT_ID=your_auth0_client_id
-    # AUTH0_CLIENT_SECRET=your_auth0_client_secret
-    DATABASE_URI=your_database_uri
+    # Example .env file
+    CHROME_PROFILE_PATH=/path/to/chrome/profile
+    CHROME_PROFILE_NAME=YourProfileName
+    SEARCH_QUERY=YourSearchQuery
     ```
+    *(Note: the code chunk summary implies these variables; create a `requirements.txt` with necessary packages if one doesn't exist)*
 
-    **Important:** Replace placeholder values with your actual credentials and configuration paths. The `EXCEL_AGENT_CONFIG` variable points to the config the excel agent requires to function.
-
-4.  **Run the FastAPI server:**
+4.  **Run the Flask API:**
 
     ```bash
     python app.py
@@ -69,50 +64,53 @@ This project automates interactions between Twitter and Excel, enabling users to
 
 ## Usage
 
-The application exposes several API endpoints for interacting with the system. You can send requests to these endpoints to process queries, execute commands in Excel, and retrieve data.
+The Flask API provides several endpoints:
 
-*   **/process_query:** Accepts a user query and returns the AI's response after processing it through the `excel_agent`.
-*   **/autonomous_action:** Accepts a query and context data. Executes an autonomous action in Excel and returns the result.
-*   **/execute_command:** Executes a specific command in Excel.
-*   **/health_check:** Checks the health status of the API and its dependencies.
-*   **/connect_to_excel:** Attempts to connect to the Excel instance.
+*   `/`: Renders the `index.html` (if applicable).
+*   `/process_query`: Processes a user query against the Excel application.  Send a JSON payload with a `query` field.
+*   `/autonomous_action`: Processes a query with context data, triggering autonomous actions in Excel. Send a JSON payload.
+*   `/execute_command`: Executes a specific command in the Excel application. Send a JSON payload with a `command` field.
+*   `/health_check`: Checks the health of the API and the Excel connection.
+*   `/connect_to_excel`: Connects to an Excel instance.
 
-Example usage (using `curl`):
+Example using `curl`:
 
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{"query": "Summarize sales data"}' http://localhost:5000/process_query
+curl -X POST -H "Content-Type: application/json" -d '{"query": "your query"}' http://localhost:5000/process_query
 ```
 
 ## Environment Variables
 
-The following environment variables are required for the application to function correctly:
+The following environment variables are required:
 
-*   `EXCEL_AGENT_CONFIG`:  Path to the Excel agent configuration file.  This file defines how the application interacts with Excel.
-*   `DATABASE_URI`:  The URI for the database connection (if applicable for storing data). (Not used in current code but included for potential future use based on usual project structures.)
+*   `CHROME_PROFILE_PATH`: The path to the Chrome profile directory.
+*   `CHROME_PROFILE_NAME`: The name of the Chrome profile.
+*   `SEARCH_QUERY`: The search query used for scraping tweets from Twitter/X.
+
+*It is good practice to store the `SEARCH_QUERY` in the environment variables for flexibility*
 
 ## Project Structure
 
 ```
 .
-├── app.py      # Flask API endpoints and logic
-├── main.py     # Twitter scraping and data processing functions
-└── readme.md   # Project documentation
+├── app.py       # Flask API application
+├── main.py      # Tweet scraping and data processing logic
+└── readme.md    # This README file
 ```
 
 ## Technologies Used
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Selenium-4DB33D?style=for-the-badge&logo=selenium" alt="Selenium"></a>
-  <a href="#"><img src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas" alt="Pandas"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Selenium-4DB33D?style=for-the-badge&logo=selenium&logoColor=white" alt="Selenium"></a>
+    <a href="#"><img src="https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas"></a>
+    <a href="#"><img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"></a>
 </p>
 
 *   **Backend:** Flask (Python)
-*   **Web Scraping:** Selenium, WebDriver Manager
-*   **Data Processing:** Pandas, Regular Expressions
-*   **API:** Flask
-*   **Excel Integration:** Custom `excel_agent` (implementation not provided)
+*   **Web Scraping:** Selenium
+*   **Data Processing:** pandas
+*   **Automation:** webdriver\_manager
 
 ## License
 
